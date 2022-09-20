@@ -47,7 +47,7 @@ MStatus colDetectionNode::initialize()
     MFnCompoundAttribute cmpAttr;
     MObject x, y, z;
 
-    // point attributes
+    // input attributes
     x = nAttr.create("parentX", "prx", MFnNumericData::kDouble, 0.0);
     y = nAttr.create("parentY", "pry", MFnNumericData::kDouble, 0.0);
     z = nAttr.create("parentZ", "prz", MFnNumericData::kDouble, 0.0);
@@ -246,8 +246,6 @@ MStatus colDetectionNode::compute(const MPlug& plug, MDataBlock& data)
                 {
                     p = sphereCol_p + ((p - sphereCol_p).normal() * (sphereCol_r + r));
                 };
-
-                //sphereColArrayHandle.next();
             };
 
             //capsule collision
@@ -281,14 +279,12 @@ MStatus colDetectionNode::compute(const MPlug& plug, MDataBlock& data)
                 else
                 {
                     MVector q = capsuleCol_pA + (ab * t);
-                    float rad = capsuleCol_rA * (1.0 - ratio) + capsuleCol_rB * ratio;
+                    double rad = capsuleCol_rA * (1.0 - ratio) + capsuleCol_rB * ratio;
                     if ((p - q).length() < (rad + r))
                     {
                         p = q + ((p - q).normal() * (rad + r));
                     };
                 };
-
-                //capsuleColArrayHandle.next();
             };
 
             //infinite plane collision
@@ -303,8 +299,6 @@ MStatus colDetectionNode::compute(const MPlug& plug, MDataBlock& data)
                 {
                     p = p - (iPlaneCol_n * (distancePointPlane - r));
                 };
-
-                //iPlaneColArrayHandle.next();
             };
             
             //ground collision
