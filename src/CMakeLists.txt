@@ -7,6 +7,8 @@ set(PROJECT_NAME colDetectionNode)
 set(SOURCE_FILES
    colDetectionNode.h
    colDetectionNode.cpp
+   colDetectionMtxNode.h
+   colDetectionMtxNode.cpp
    pluginMain.cpp
 ) 
 
