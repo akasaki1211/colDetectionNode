@@ -184,8 +184,10 @@ MStatus colDetectionMtxNode::compute(const MPlug& plug, MDataBlock& data)
         MTransformationMatrix pMtx = data.inputValue(s_p).asMatrix();
         MVector p0 = p0Mtx.getTranslation(MSpace::kWorld);
         MVector p = pMtx.getTranslation(MSpace::kWorld);
-        double r = data.inputValue(s_r).asDouble();
-        double d = data.inputValue(s_d).asDouble();
+        double s[3];
+        p0Mtx.getScale(s, MSpace::kWorld);
+        double r = data.inputValue(s_r).asDouble() * s[0];
+        double d = data.inputValue(s_d).asDouble() * s[0];
         
         long iter = data.inputValue(s_iter).asLong();
 
@@ -204,11 +206,13 @@ MStatus colDetectionMtxNode::compute(const MPlug& plug, MDataBlock& data)
         // detection
         MTransformationMatrix sphereCol_m;
         MVector sphereCol_p;
+        double sphereCol_s[3];
         double sphereCol_r;
         MTransformationMatrix capsuleCol_mA;
         MTransformationMatrix capsuleCol_mB;
         MVector capsuleCol_pA;
         MVector capsuleCol_pB;
+        double capsuleCol_s[3];
         double capsuleCol_rA;
         double capsuleCol_rB;
         MTransformationMatrix iPlaneCol_m;
@@ -223,7 +227,8 @@ MStatus colDetectionMtxNode::compute(const MPlug& plug, MDataBlock& data)
                 MDataHandle sphereCollider = sphereColArrayHandle.inputValue();
                 sphereCol_m = sphereCollider.child(s_sphereColMtx).asMatrix();
                 sphereCol_p = sphereCol_m.getTranslation(MSpace::kWorld);
-                sphereCol_r = sphereCollider.child(s_sphereColRad).asDouble();
+                sphereCol_m.getScale(sphereCol_s, MSpace::kWorld);
+                sphereCol_r = sphereCollider.child(s_sphereColRad).asDouble() * sphereCol_s[0];
                 
                 if ((p - sphereCol_p).length() < (sphereCol_r + r))
                 {
@@ -239,8 +244,9 @@ MStatus colDetectionMtxNode::compute(const MPlug& plug, MDataBlock& data)
                 capsuleCol_pA = capsuleCol_mA.getTranslation(MSpace::kWorld);
                 capsuleCol_mB = capsuleCollider.child(s_capsuleColMtxB).asMatrix();
                 capsuleCol_pB = capsuleCol_mB.getTranslation(MSpace::kWorld);
-                capsuleCol_rA = capsuleCollider.child(s_capsuleColRadA).asDouble();
-                capsuleCol_rB = capsuleCollider.child(s_capsuleColRadB).asDouble();
+                capsuleCol_mA.getScale(capsuleCol_s, MSpace::kWorld);
+                capsuleCol_rA = capsuleCollider.child(s_capsuleColRadA).asDouble() * capsuleCol_s[0];
+                capsuleCol_rB = capsuleCollider.child(s_capsuleColRadB).asDouble() * capsuleCol_s[0];
                 
                 double h = (capsuleCol_pB - capsuleCol_pA).length();
                 MVector ab = (capsuleCol_pB - capsuleCol_pA).normal();

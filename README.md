@@ -18,8 +18,9 @@ There are two types of nodes of: input as vectors (`colDetectionNode`) or input 
 ||`colDetectionNode`|`colDetectionMtxNode`|expression node ([maya_expressionCollision](https://github.com/akasaki1211/maya_expressionCollision))|
 |---|---|---|---|
 |**Supported Collider**|- sphere<br>- capsule<br>- capsule2<br>- infinite plane|- sphere<br>- capsule<br>- capsule2<br>- infinite plane|- sphere<br>- capsule<br>- capsule2<br>- infinite plane<br>- cuboid|
+|**Parent**|required|required|optional|
 |**Ground Collision**|✔|✔|✔|
-|**Scalable**|-|-|✔|
+|**Scalable**|-|✔|✔|
 
 ## Pre-built plug-ins
 Pre-built `colDetectionNode.mll` in the [plug-ins](./plug-ins) folder. Install to the appropriate Maya version and ready to use.  
@@ -31,19 +32,22 @@ Pre-built `colDetectionNode.mll` in the [plug-ins](./plug-ins) folder. Install t
 
 ## Performance
 The following is the processing time for a single node when one each of sphere, capsule, and infinitePlane Collider is used, Iterations : 3, GroundCol : On.  
+On its own, `colDetectionNode` is faster, but `colDetectionMtxNode` may be faster as a result because it does not require decomposeMatrix, etc. 　
 
 |`colDetectionNode`|`colDetectionMtxNode`|expression node ([maya_expressionCollision](https://github.com/akasaki1211/maya_expressionCollision))|
 |---|---|---|
 |14.48us|26.12us|78.33us|
 
+The following image shows a processing time comparison of 100 nodes when 10 capsule2 colliders are used, Iterations: 3, and GroundCol: On.
+
+![performance.gif](./.images/performance.gif)
+
+> **Tested:**  
 > * Windows 11
 > * Intel(R) Core(TM) i7-10700 CPU @ 2.90GHz
-> * 16GB RAM
+> * 32GB RAM
 > * NVIDIA GeForce RTX 3060
-
-On its own, `colDetectionNode` is faster, but `colDetectionMtxNode` may be faster as a result because it does not require decomposeMatrix, etc. 　
 
 ## Note  
 * Processing order of collider type cannot be changed.  
 * Too many colliders reduce accuracy.  
-* Scale is not supported.  
