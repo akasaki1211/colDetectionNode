@@ -1,7 +1,7 @@
 # colDetectionNode
 
-Remaked with plugin-node of collision detection part (expression node) of [maya_expressionCollision](https://github.com/akasaki1211/maya_expressionCollision).  
-A slight improvement in processing speed can be expected.  
+Custom-node of collision detection part (expression node) of [maya_expressionCollision](https://github.com/akasaki1211/maya_expressionCollision).  
+Processing speed can be expected to improve.  
 
 > **Warning**  
 > Internal Use ID (0x7c001, 0x7c002) is used.
@@ -10,14 +10,27 @@ A slight improvement in processing speed can be expected.
 There are two types of nodes of: input as vectors (`colDetectionNode`) or input as matrices (`colDetectionMtxNode`). These outputs are the same.
 ![nodes](.images/nodes.jpg)  
 
-On its own, `colDetectionNode` is faster, but `colDetectionMtxNode` may be faster as a result because it does not require decomposeMatrix, etc. 　
 |use `colDetectionNode`|use `colDetectionMtxNode`|
 |---|---|
 |![colDetectionNode](./.images/colDetectionNode.jpg)|![colDetectionMtxNode](./.images/colDetectionMtxNode.jpg)|
 
+## Specification
+||`colDetectionNode`|`colDetectionMtxNode`|expression node ([maya_expressionCollision](https://github.com/akasaki1211/maya_expressionCollision))|
+|---|---|---|---|
+|**Supported Collider**|- sphere<br>- capsule<br>- capsule2<br>- infinite plane|- sphere<br>- capsule<br>- capsule2<br>- infinite plane|- sphere<br>- capsule<br>- capsule2<br>- infinite plane<br>- cuboid|
+|**Ground Collision**|✔|✔|✔|
+|**Scalable**|-|-|✔|
+
+## Pre-built plug-ins
+Pre-built `colDetectionNode.mll` in the [plug-ins](./plug-ins) folder. Install to the appropriate Maya version and ready to use.  
+|Build|Plug-in|
+|---|---|
+|Maya 2022 Update 5 win64|[download](./plug-ins/2022/colDetectionNode.mll)|
+|Maya 2023 Update 3 win64|[download](./plug-ins/2023/colDetectionNode.mll)|
+|Maya 2024 Update 2 win64|[download](./plug-ins/2024/colDetectionNode.mll)|
 
 ## Performance
-The following is the processing time for a single node when one each of sphere, capsule, and infinitePlane Collider is used, Iterations : 3, GroundCol : On.
+The following is the processing time for a single node when one each of sphere, capsule, and infinitePlane Collider is used, Iterations : 3, GroundCol : On.  
 
 |`colDetectionNode`|`colDetectionMtxNode`|expression node ([maya_expressionCollision](https://github.com/akasaki1211/maya_expressionCollision))|
 |---|---|---|
@@ -28,9 +41,7 @@ The following is the processing time for a single node when one each of sphere, 
 > * 16GB RAM
 > * NVIDIA GeForce RTX 3060
 
-## Development Environment
-* Windows 11
-* Maya 2022.3
+On its own, `colDetectionNode` is faster, but `colDetectionMtxNode` may be faster as a result because it does not require decomposeMatrix, etc. 　
 
 ## Note  
 * Processing order of collider type cannot be changed.  
