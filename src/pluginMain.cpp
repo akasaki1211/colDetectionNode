@@ -9,7 +9,7 @@
 MStatus initializePlugin(MObject obj)
 {
     MStatus status;
-    MFnPlugin plugin(obj, "Hiroyuki Akasaki", "1.1", "Any");
+    MFnPlugin plugin(obj, "Hiroyuki Akasaki", "1.2.0", "Any");
 
     status = plugin.registerNode(colDetectionNodeName, colDetectionNode::s_id, colDetectionNode::creator, colDetectionNode::initialize);
     if (!status) {

@@ -12,7 +12,6 @@ MTypeId colDetectionMtxNode::s_id(0x7c002);
 MObject colDetectionMtxNode::s_p0;
 MObject colDetectionMtxNode::s_p;
 MObject colDetectionMtxNode::s_r;
-MObject colDetectionMtxNode::s_d;
 MObject colDetectionMtxNode::s_iter;
 
 MObject colDetectionMtxNode::s_sphereCollider; 
@@ -58,10 +57,6 @@ MStatus colDetectionMtxNode::initialize()
     mAttr.setKeyable(true);
 
     s_r = nAttr.create("radius", "rad", MFnNumericData::kDouble, 0.0);
-    nAttr.setKeyable(true);
-    nAttr.setMin(0);
-
-    s_d = nAttr.create("distance", "dist", MFnNumericData::kDouble, 1.0);
     nAttr.setKeyable(true);
     nAttr.setMin(0);
 
@@ -138,7 +133,6 @@ MStatus colDetectionMtxNode::initialize()
     addAttribute(s_p0);
     addAttribute(s_p);
     addAttribute(s_r);
-    addAttribute(s_d);
     addAttribute(s_iter);
     addAttribute(s_sphereColMtx);
     addAttribute(s_sphereColRad);
@@ -157,7 +151,6 @@ MStatus colDetectionMtxNode::initialize()
     attributeAffects(s_p0, s_output);
     attributeAffects(s_p, s_output);
     attributeAffects(s_r, s_output);
-    attributeAffects(s_d, s_output);
     attributeAffects(s_iter, s_output);
     attributeAffects(s_sphereColMtx, s_output);
     attributeAffects(s_sphereColRad, s_output);
@@ -186,8 +179,8 @@ MStatus colDetectionMtxNode::compute(const MPlug& plug, MDataBlock& data)
         MVector p = pMtx.getTranslation(MSpace::kWorld);
         double s[3];
         p0Mtx.getScale(s, MSpace::kWorld);
-        double r = data.inputValue(s_r).asDouble() * s[0];
-        double d = data.inputValue(s_d).asDouble() * s[0];
+        double r = data.inputValue(s_r).asDouble() * s[2];
+        double d = (p - p0).length();
         
         long iter = data.inputValue(s_iter).asLong();
 
@@ -228,7 +221,7 @@ MStatus colDetectionMtxNode::compute(const MPlug& plug, MDataBlock& data)
                 sphereCol_m = sphereCollider.child(s_sphereColMtx).asMatrix();
                 sphereCol_p = sphereCol_m.getTranslation(MSpace::kWorld);
                 sphereCol_m.getScale(sphereCol_s, MSpace::kWorld);
-                sphereCol_r = sphereCollider.child(s_sphereColRad).asDouble() * sphereCol_s[0];
+                sphereCol_r = sphereCollider.child(s_sphereColRad).asDouble() * sphereCol_s[2];
                 
                 if ((p - sphereCol_p).length() < (sphereCol_r + r))
                 {
@@ -245,8 +238,8 @@ MStatus colDetectionMtxNode::compute(const MPlug& plug, MDataBlock& data)
                 capsuleCol_mB = capsuleCollider.child(s_capsuleColMtxB).asMatrix();
                 capsuleCol_pB = capsuleCol_mB.getTranslation(MSpace::kWorld);
                 capsuleCol_mA.getScale(capsuleCol_s, MSpace::kWorld);
-                capsuleCol_rA = capsuleCollider.child(s_capsuleColRadA).asDouble() * capsuleCol_s[0];
-                capsuleCol_rB = capsuleCollider.child(s_capsuleColRadB).asDouble() * capsuleCol_s[0];
+                capsuleCol_rA = capsuleCollider.child(s_capsuleColRadA).asDouble() * capsuleCol_s[2];
+                capsuleCol_rB = capsuleCollider.child(s_capsuleColRadB).asDouble() * capsuleCol_s[2];
                 
                 double h = (capsuleCol_pB - capsuleCol_pA).length();
                 MVector ab = (capsuleCol_pB - capsuleCol_pA).normal();

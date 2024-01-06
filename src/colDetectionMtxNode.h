@@ -18,7 +18,6 @@ public:
     static MObject s_p0;              //parent matrix
     static MObject s_p;               //input matrix
     static MObject s_r;               //input position radius
-    static MObject s_d;               //initial length
     
     static MObject s_iter;            //iterations of detection
 
