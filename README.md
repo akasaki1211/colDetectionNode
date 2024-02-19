@@ -26,6 +26,7 @@ There are two types of nodes of: input as vectors (`colDetectionNode`) or input 
 Pre-built `colDetectionNode.mll` in the [plug-ins](./plug-ins) folder. Install to the appropriate Maya version and ready to use.  
 |Build|Plug-in<br>(*Click on "Download raw file" at the link.)|
 |---|---|
+|Maya 2020 Update 4 win64|[download](./plug-ins/2020/colDetectionNode.mll)|
 |Maya 2022 Update 5 win64|[download](./plug-ins/2022/colDetectionNode.mll)|
 |Maya 2023 Update 3 win64|[download](./plug-ins/2023/colDetectionNode.mll)|
 |Maya 2024 Update 2 win64|[download](./plug-ins/2024/colDetectionNode.mll)|

@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10)
+
+project(colDetectionNode)
 
 include($ENV{DEVKIT_LOCATION}/cmake/pluginEntry.cmake) 
-
-set(PROJECT_NAME colDetectionNode) 
 
 set(SOURCE_FILES
    colDetectionNode.h
